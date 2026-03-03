@@ -1,5 +1,8 @@
 namespace Recrutador.SignalR.Contracts;
 
+/// <summary>
+///     Full HUD snapshot sent on initial connection/reconnect.
+/// </summary>
 public sealed record ActiveInterviewStateContract
 {
     public CoveragePanelContract CoveragePanel { get; init; } = new();
@@ -18,6 +21,9 @@ public sealed record ActiveInterviewDeltaContract
     public DateTimeOffset Timestamp { get; init; }
 }
 
+/// <summary>
+///     Coverage panel payload with criterion progress and consistency summary.
+/// </summary>
 public sealed record CoveragePanelContract
 {
     public int? OverallScore { get; init; }
@@ -80,6 +86,9 @@ public sealed record SuggestedNextPanelContract
     public int FadeTimeoutMs { get; init; } = 8000;
 }
 
+/// <summary>
+///     Multi-verbosity prompt text variants for instant HUD switching.
+/// </summary>
 public sealed record PromptVerbosityContract
 {
     public string Essential { get; init; } = string.Empty;
@@ -107,13 +116,16 @@ public sealed record InterviewContextSignalContract
 public sealed record EvaluationToastContract
 {
     public string Signal { get; init; } = "NEUTRAL";
-    public string Message { get; init; } = string.Empty;
-    public int DurationMs { get; init; } = 5000;
+    public string Explanation { get; init; } = string.Empty;
+    public string? FollowUpSuggestion { get; init; }
+    public IReadOnlyList<string> EvidenceMissing { get; init; } = [];
+    public int DisplayDurationMs { get; init; } = 3000;
 }
 
 public sealed record SpeakerAttributionContract
 {
+    public string Label { get; init; } = "UNKNOWN";
+    public int Score { get; init; }
+    public string TranscriptSegmentId { get; init; } = string.Empty;
     public int SequenceNumber { get; init; }
-    public string Speaker { get; init; } = string.Empty;
-    public decimal Confidence { get; init; }
 }
