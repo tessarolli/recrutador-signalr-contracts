@@ -8,6 +8,7 @@ public sealed record ActiveInterviewStateContract
     public CoveragePanelContract CoveragePanel { get; init; } = new();
     public SuggestedNextPanelContract SuggestedNextPanel { get; init; } = new();
     public InterviewContextPanelContract InterviewContextPanel { get; init; } = new();
+    public string? ActivePromptText { get; init; }
     public DateTimeOffset Timestamp { get; init; }
 }
 
@@ -16,6 +17,7 @@ public sealed record ActiveInterviewDeltaContract
     public CoveragePanelUpdateContract? CoveragePanelUpdate { get; init; }
     public SuggestedNextPanelContract? SuggestedNextPanelUpdate { get; init; }
     public InterviewContextPanelContract? InterviewContextPanelUpdate { get; init; }
+    public string? ActivePromptText { get; init; }
     public EvaluationToastContract? Evaluation { get; init; }
     public SpeakerAttributionContract? SpeakerAttribution { get; init; }
     public DateTimeOffset Timestamp { get; init; }
