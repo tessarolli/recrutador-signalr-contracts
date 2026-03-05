@@ -131,3 +131,11 @@ public sealed record SpeakerAttributionContract
     public string TranscriptSegmentId { get; init; } = string.Empty;
     public int SequenceNumber { get; init; }
 }
+
+public sealed record SessionTerminationContract
+{
+    public string SessionId { get; init; } = string.Empty;
+    public string Status { get; init; } = string.Empty;
+    public string Reason { get; init; } = string.Empty;
+    public string? RedirectUrl { get; init; }
+}
