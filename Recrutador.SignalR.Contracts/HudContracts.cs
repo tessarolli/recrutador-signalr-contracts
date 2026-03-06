@@ -115,12 +115,34 @@ public sealed record InterviewContextSignalContract
     public int Priority { get; init; }
 }
 
+/// <summary>
+///     Ephemeral evaluation insight delivered to the HUD after a live pipeline pass.
+/// </summary>
 public sealed record EvaluationToastContract
 {
     public string Signal { get; init; } = "NEUTRAL";
     public string Explanation { get; init; } = string.Empty;
-    public string? FollowUpSuggestion { get; init; }
+    public string CriterionId { get; init; } = string.Empty;
+    public string CriterionName { get; init; } = string.Empty;
+
+    /// <summary>
+    ///     Canonical key-point identifiers captured by the evaluation.
+    /// </summary>
+    public IReadOnlyList<string> EvidenceCaptured { get; init; } = [];
+
+    /// <summary>
+    ///     Canonical key-point identifiers still missing for the active criterion.
+    /// </summary>
     public IReadOnlyList<string> EvidenceMissing { get; init; } = [];
+
+    /// <summary>
+    ///     Canonical red-flag identifiers triggered by the evaluation.
+    /// </summary>
+    public IReadOnlyList<string> RedFlagsTriggered { get; init; } = [];
+
+    /// <summary>
+    ///     Suggested toast lifetime in milliseconds for the receiving HUD client.
+    /// </summary>
     public int DisplayDurationMs { get; init; } = 3000;
 }
 
