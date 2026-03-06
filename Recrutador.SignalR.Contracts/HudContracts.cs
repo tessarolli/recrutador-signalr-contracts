@@ -7,6 +7,7 @@ public sealed record ActiveInterviewStateContract
 {
     public CoveragePanelContract CoveragePanel { get; init; } = new();
     public SuggestedNextPanelContract SuggestedNextPanel { get; init; } = new();
+    public List<SuggestedNextPanelContract> QueuedSuggestedPanels { get; init; } = [];
     public InterviewContextPanelContract InterviewContextPanel { get; init; } = new();
     public PromptVerbosityContract? ActivePrompt { get; init; }
     public List<HudInsightContract> Insights { get; init; } = [];
@@ -17,6 +18,7 @@ public sealed record ActiveInterviewDeltaContract
 {
     public CoveragePanelUpdateContract? CoveragePanelUpdate { get; init; }
     public SuggestedNextPanelContract? SuggestedNextPanelUpdate { get; init; }
+    public List<SuggestedNextPanelContract>? QueuedSuggestedPanelsUpdate { get; init; }
     public InterviewContextPanelContract? InterviewContextPanelUpdate { get; init; }
     public PromptVerbosityContract? ActivePrompt { get; init; }
     public List<HudInsightContract> Insights { get; init; } = [];
