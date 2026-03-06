@@ -9,6 +9,7 @@ public sealed record ActiveInterviewStateContract
     public SuggestedNextPanelContract SuggestedNextPanel { get; init; } = new();
     public InterviewContextPanelContract InterviewContextPanel { get; init; } = new();
     public PromptVerbosityContract? ActivePrompt { get; init; }
+    public List<HudInsightContract> Insights { get; init; } = [];
     public DateTimeOffset Timestamp { get; init; }
 }
 
@@ -18,7 +19,7 @@ public sealed record ActiveInterviewDeltaContract
     public SuggestedNextPanelContract? SuggestedNextPanelUpdate { get; init; }
     public InterviewContextPanelContract? InterviewContextPanelUpdate { get; init; }
     public PromptVerbosityContract? ActivePrompt { get; init; }
-    public EvaluationToastContract? Evaluation { get; init; }
+    public List<HudInsightContract> Insights { get; init; } = [];
     public SpeakerAttributionContract? SpeakerAttribution { get; init; }
     public DateTimeOffset Timestamp { get; init; }
 }
@@ -35,7 +36,6 @@ public sealed record CoveragePanelContract
     public int ConsistencyCount { get; init; }
     public int AlertCount { get; init; }
     public List<CriterionCoverageContract> Criteria { get; init; } = [];
-    public List<AlertDetailContract> AlertDetails { get; init; } = [];
 }
 
 public sealed record CoveragePanelUpdateContract
@@ -47,7 +47,6 @@ public sealed record CoveragePanelUpdateContract
     public int? ConsistencyCount { get; init; }
     public int? AlertCount { get; init; }
     public List<CriterionCoverageContract>? Criteria { get; init; }
-    public List<AlertDetailContract>? AlertDetails { get; init; }
 }
 
 public sealed record CriterionCoverageContract
@@ -68,12 +67,64 @@ public sealed record CoverageChecklistItemContract
     public bool IsChecked { get; init; }
 }
 
-public sealed record AlertDetailContract
+/// <summary>
+///     Canonical HUD insight shown in the Insights tab and optionally escalated to a toast.
+/// </summary>
+/// <remarks>
+///     The backend owns the stable identity and human-readable message so every client path
+///     consumes the same semantic insight without re-deriving text or dedup keys locally.
+/// </remarks>
+public sealed record HudInsightContract
 {
+    /// <summary>
+    ///     Stable backend-owned identity for this insight across live updates and reconnect snapshots.
+    /// </summary>
+    public string Id { get; init; } = string.Empty;
+
+    /// <summary>
+    ///     Severity / signal classification used for theming, dedup escalation, and toast policy.
+    /// </summary>
+    public string Signal { get; init; } = "NOTED";
+
+    /// <summary>
+    ///     Criterion identifier associated with the finding.
+    /// </summary>
     public string CriterionId { get; init; } = string.Empty;
+
+    /// <summary>
+    ///     Criterion display name associated with the finding.
+    /// </summary>
     public string CriterionName { get; init; } = string.Empty;
-    public string Type { get; init; } = "RED_FLAG";
-    public string Brief { get; init; } = string.Empty;
+
+    /// <summary>
+    ///     Human-readable message rendered consistently in Insights, toasts, and reconnect state.
+    /// </summary>
+    public string Message { get; init; } = string.Empty;
+
+    /// <summary>
+    ///     Canonical finding identifiers used for durable deduplication and evidence correlation.
+    /// </summary>
+    public IReadOnlyList<string> CanonicalIds { get; init; } = [];
+
+    /// <summary>
+    ///     Canonical evidence identifiers still missing for the active criterion.
+    /// </summary>
+    public IReadOnlyList<string> EvidenceMissing { get; init; } = [];
+
+    /// <summary>
+    ///     Whether the interviewer can request a deeper follow-up from this finding.
+    /// </summary>
+    public bool CanProbeDeeper { get; init; }
+
+    /// <summary>
+    ///     Whether the insight should be escalated to the floating toast overlay.
+    /// </summary>
+    public bool ShouldToast { get; init; }
+
+    /// <summary>
+    ///     Suggested toast lifetime in milliseconds when <see cref="ShouldToast" /> is enabled.
+    /// </summary>
+    public int DisplayDurationMs { get; init; } = 3000;
 }
 
 public sealed record SuggestedNextPanelContract
@@ -113,37 +164,6 @@ public sealed record InterviewContextSignalContract
     public string Icon { get; init; } = string.Empty;
     public string Text { get; init; } = string.Empty;
     public int Priority { get; init; }
-}
-
-/// <summary>
-///     Ephemeral evaluation insight delivered to the HUD after a live pipeline pass.
-/// </summary>
-public sealed record EvaluationToastContract
-{
-    public string Signal { get; init; } = "NEUTRAL";
-    public string Explanation { get; init; } = string.Empty;
-    public string CriterionId { get; init; } = string.Empty;
-    public string CriterionName { get; init; } = string.Empty;
-
-    /// <summary>
-    ///     Canonical key-point identifiers captured by the evaluation.
-    /// </summary>
-    public IReadOnlyList<string> EvidenceCaptured { get; init; } = [];
-
-    /// <summary>
-    ///     Canonical key-point identifiers still missing for the active criterion.
-    /// </summary>
-    public IReadOnlyList<string> EvidenceMissing { get; init; } = [];
-
-    /// <summary>
-    ///     Canonical red-flag identifiers triggered by the evaluation.
-    /// </summary>
-    public IReadOnlyList<string> RedFlagsTriggered { get; init; } = [];
-
-    /// <summary>
-    ///     Suggested toast lifetime in milliseconds for the receiving HUD client.
-    /// </summary>
-    public int DisplayDurationMs { get; init; } = 3000;
 }
 
 public sealed record SpeakerAttributionContract
