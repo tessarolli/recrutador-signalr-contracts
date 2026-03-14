@@ -9,6 +9,7 @@ public sealed record ActiveInterviewStateContract
     public List<SuggestedNextPanelContract> QueuedSuggestedPanels { get; init; } = [];
     public InterviewContextPanelContract InterviewContextPanel { get; init; } = new();
     public PromptVerbosityContract? ActivePrompt { get; init; }
+    public string? ActivePromptRerouteReason { get; init; }
     public List<HudInsightContract> Insights { get; init; } = [];
     public DateTimeOffset Timestamp { get; init; }
 }
@@ -19,6 +20,7 @@ public sealed record ActiveInterviewDeltaContract
     public List<SuggestedNextPanelContract>? QueuedSuggestedPanelsUpdate { get; init; }
     public InterviewContextPanelContract? InterviewContextPanelUpdate { get; init; }
     public PromptVerbosityContract? ActivePrompt { get; init; }
+    public string? ActivePromptRerouteReason { get; init; }
     public List<HudInsightContract> Insights { get; init; } = [];
     public SpeakerAttributionContract? SpeakerAttribution { get; init; }
     public DateTimeOffset Timestamp { get; init; }
