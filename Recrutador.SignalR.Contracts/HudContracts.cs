@@ -1,6 +1,30 @@
 namespace Recrutador.SignalR.Contracts;
 
 /// <summary>
+///     Identifies which prompt was retired (followed by the interviewer)
+///     in this pipeline cycle. Enables the frontend to animate the correct
+///     card to "used" state without inferring from state diffs.
+/// </summary>
+public sealed record PromptRetiredContract
+{
+    /// <summary>"ACTIVE" when the interviewer followed the active prompt.
+    /// "QUEUED" when they followed a queued suggestion instead.</summary>
+    public string Source { get; init; } = "ACTIVE";
+
+    /// <summary>Queue index of the retired prompt. Null when Source == "ACTIVE".</summary>
+    public int? QueueIndex { get; init; }
+
+    /// <summary>Director text of the retired prompt for frontend matching.</summary>
+    public string DirectorText { get; init; } = string.Empty;
+
+    /// <summary>Criterion associated with the retired prompt. Null for warmup.</summary>
+    public string? Criterion { get; init; }
+
+    /// <summary>Ladder step of the retired prompt.</summary>
+    public string? LadderStep { get; init; }
+}
+
+/// <summary>
 ///     Full HUD snapshot sent on initial connection/reconnect.
 /// </summary>
 public sealed record ActiveInterviewStateContract
@@ -24,6 +48,14 @@ public sealed record ActiveInterviewDeltaContract
     public List<HudInsightContract> Insights { get; init; } = [];
     public SpeakerAttributionContract? SpeakerAttribution { get; init; }
     public DateTimeOffset Timestamp { get; init; }
+
+    /// <summary>
+    ///     Identifies which prompt the interviewer followed this cycle.
+    ///     Null when no prompt was matched. The frontend should use this
+    ///     to animate the correct prompt card to "used" state, rather than
+    ///     inferring from the active/queue state diff.
+    /// </summary>
+    public PromptRetiredContract? RetiredPrompt { get; init; }
 }
 
 /// <summary>
