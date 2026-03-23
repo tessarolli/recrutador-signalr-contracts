@@ -25,6 +25,8 @@ public static class PromptIdHelper
     /// </summary>
     /// <param name="promptText">Prompt text to hash or <c>null</c>.</param>
     /// <returns>Identifier for the supplied text, or <c>null</c> when empty.</returns>
-    public static string? BuildPromptIdOrNull(string? promptText) =>
-        string.IsNullOrWhiteSpace(promptText) ? null : BuildPromptId(promptText);
+    public static string? BuildPromptIdOrNull(string? promptText)
+    {
+        return string.IsNullOrWhiteSpace(promptText) ? null : BuildPromptId(promptText);
+    }
 }

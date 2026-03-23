@@ -7,8 +7,10 @@ namespace Recrutador.SignalR.Contracts;
 /// </summary>
 public sealed record PromptRetiredContract
 {
-    /// <summary>"ACTIVE" when the interviewer followed the active prompt.
-    /// "QUEUED" when they followed a queued suggestion instead.</summary>
+    /// <summary>
+    ///     "ACTIVE" when the interviewer followed the active prompt.
+    ///     "QUEUED" when they followed a queued suggestion instead.
+    /// </summary>
     public string Source { get; init; } = "ACTIVE";
 
     /// <summary>Queue index of the retired prompt. Null when Source == "ACTIVE".</summary>
