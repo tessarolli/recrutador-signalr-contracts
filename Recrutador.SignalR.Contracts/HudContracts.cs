@@ -83,16 +83,69 @@ public sealed record CoveragePanelUpdateContract
     public List<CriterionCoverageContract>? Criteria { get; init; }
 }
 
+/// <summary>
+///     Per-criterion coverage data pushed to the HUD via SignalR.
+///
+///     Each card represents one evaluation criterion from the blueprint.
+///     The HUD uses these fields to render:
+///       • A score indicator (Score)
+///       • Active/inactive highlight (IsActive)
+///       • Checklist of key points with check marks (KeyPoints)
+///       • Red flag indicators (RedFlags)
+///       • Lifecycle badge showing criterion state (LifecycleStatus)
+///       • Tooltip with completion reason for terminal criteria (CompletionReason)
+///
+///     LifecycleStatus drives the visual treatment:
+///       NOT_STARTED — dimmed, waiting
+///       IN_PROGRESS — active indicator, pulsing if IsActive
+///       SATURATED   — green check, "enough evidence collected"
+///       ABANDONED   — grey/red X, with CompletionReason tooltip
+/// </summary>
 public sealed record CriterionCoverageContract
 {
-    public string CriterionId { get; init; } = string.Empty;
-    public string CriterionName { get; init; } = string.Empty;
-    public int Score { get; init; }
-    public int FlagCount { get; init; }
-    public bool IsActive { get; init; }
-    public string? LadderStep { get; init; }
-    public List<CoverageChecklistItemContract> KeyPoints { get; init; } = [];
-    public List<CoverageChecklistItemContract> RedFlags { get; init; } = [];
+    /// <summary>Criterion identifier from the blueprint.</summary>
+    public required string CriterionId { get; init; }
+
+    /// <summary>Human-readable criterion name.</summary>
+    public required string CriterionName { get; init; }
+
+    /// <summary>Current belief score (0-100).</summary>
+    public required int Score { get; init; }
+
+    /// <summary>Number of red flags triggered for this criterion.</summary>
+    public required int FlagCount { get; init; }
+
+    /// <summary>True if this is the criterion currently being explored.</summary>
+    public required bool IsActive { get; init; }
+
+    /// <summary>Current probe depth when this criterion is active. Null otherwise.</summary>
+    public required string? LadderStep { get; init; }
+
+    /// <summary>
+    ///     Lifecycle status string: NOT_STARTED, IN_PROGRESS, SATURATED, or ABANDONED.
+    ///     Drives the visual treatment of the criterion card on the HUD.
+    /// </summary>
+    public required string LifecycleStatus { get; init; }
+
+    /// <summary>
+    ///     Human-readable reason for reaching the terminal state.
+    ///     Null for NOT_STARTED and IN_PROGRESS criteria.
+    ///     Shown as a tooltip or subtitle on the HUD card for
+    ///     SATURATED and ABANDONED criteria.
+    /// </summary>
+    public required string? CompletionReason { get; init; }
+
+    /// <summary>
+    ///     Checklist of key points from the blueprint, each with a boolean
+    ///     indicating whether the candidate has covered it.
+    /// </summary>
+    public required List<CoverageChecklistItemContract> KeyPoints { get; init; }
+
+    /// <summary>
+    ///     Checklist of red flags from the blueprint, each with a boolean
+    ///     indicating whether it has been triggered.
+    /// </summary>
+    public required List<CoverageChecklistItemContract> RedFlags { get; init; }
 }
 
 public sealed record CoverageChecklistItemContract
