@@ -9,6 +9,7 @@ public sealed record ActiveInterviewStateContract
     public List<SuggestedNextPanelContract> QueuedSuggestedPanels { get; init; } = [];
     public InterviewContextPanelContract InterviewContextPanel { get; init; } = new();
     public PromptVerbosityContract? ActivePrompt { get; init; }
+    public ActivePromptChangeReasonContract? ActivePromptChangeReason { get; init; }
     public string? ActivePromptRerouteReason { get; init; }
     public PromptVerbosityContract? PastPrompt { get; init; }
     public string? PastPromptDismissalReason { get; init; }
