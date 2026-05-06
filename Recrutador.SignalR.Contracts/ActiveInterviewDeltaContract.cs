@@ -27,4 +27,34 @@ public sealed record ActiveInterviewDeltaContract
     ///     Phase 4 Task 4.6 visibility gap.
     /// </summary>
     public FollowUpStateContract? FollowUpState { get; init; }
+
+    /// <summary>
+    ///     Drives the Hero panel state machine on the HUD. Null when the Hero
+    ///     state has not changed this cycle.
+    /// </summary>
+    public HeroState? HeroState { get; init; }
+
+    /// <summary>
+    ///     Current position within the strategy ladder for the active criterion.
+    ///     Null when not in Core phase or when the ladder has not advanced this cycle.
+    /// </summary>
+    public LadderProgressContract? LadderProgress { get; init; }
+
+    /// <summary>
+    ///     Word-count buffer state for the FollowUpGenerator gate. Null when the
+    ///     feature is disabled or the value has not changed this cycle.
+    /// </summary>
+    public BufferFillContract? BufferFill { get; init; }
+
+    /// <summary>
+    ///     Off-script drift signal. Null when consecutive unmatched turns is zero
+    ///     or the value has not changed this cycle.
+    /// </summary>
+    public OffScriptCueContract? OffScriptCue { get; init; }
+
+    /// <summary>
+    ///     Rolling history of recently-asked prompts for the HUD history lane.
+    ///     Null when the list has not changed this cycle.
+    /// </summary>
+    public IReadOnlyList<AskedPromptContract>? RecentlyAskedPrompts { get; init; }
 }
