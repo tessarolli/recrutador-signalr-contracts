@@ -19,4 +19,12 @@ public sealed record ActiveInterviewDeltaContract
     ///     inferring from the active/queue state diff.
     /// </summary>
     public PromptRetiredContract? RetiredPrompt { get; init; }
+
+    /// <summary>
+    ///     Lifecycle state of Stage 4b (FollowUpGeneration) for this run.
+    ///     Null when the stage was gated off entirely; otherwise reflects whether
+    ///     the follow-up is waiting, kept, abandoned, or promoted. Closes the §17
+    ///     Phase 4 Task 4.6 visibility gap.
+    /// </summary>
+    public FollowUpStateContract? FollowUpState { get; init; }
 }
