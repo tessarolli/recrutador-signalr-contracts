@@ -17,4 +17,11 @@ public sealed record LadderProgressContract
 
     /// <summary>Short code identifying the active strategy (A/B/C/D/E).</summary>
     public string? StrategyCode { get; init; }
+
+    /// <summary>
+    ///     Uppercase depth name for the current step (PROBE / ELICIT / COMMIT /
+    ///     PERTURB). Mirrors the <c>ProbeDepth</c> enum so HUD consumers can map
+    ///     directly to localized labels without knowing the strategy ladder.
+    /// </summary>
+    public string StepLabel { get; init; } = string.Empty;
 }
