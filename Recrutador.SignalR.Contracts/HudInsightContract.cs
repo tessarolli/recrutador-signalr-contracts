@@ -45,11 +45,6 @@ public sealed record HudInsightContract
     public IReadOnlyList<string> EvidenceMissing { get; init; } = [];
 
     /// <summary>
-    ///     Whether the interviewer can request a deeper follow-up from this finding.
-    /// </summary>
-    public bool CanProbeDeeper { get; init; }
-
-    /// <summary>
     ///     Whether the insight should be escalated to the floating toast overlay.
     /// </summary>
     public bool ShouldToast { get; init; }
