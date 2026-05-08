@@ -13,6 +13,5 @@ public enum ActivePromptChangeReasonContract
     UserActionUndoSkip,
     UserActionUseThis,
     FollowUpGenerated,
-    CourseCorrection,
     EvaluationReroute,
 }

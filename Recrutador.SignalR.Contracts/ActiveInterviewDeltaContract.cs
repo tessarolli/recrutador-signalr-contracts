@@ -7,7 +7,6 @@ public sealed record ActiveInterviewDeltaContract
     public InterviewContextPanelContract? InterviewContextPanelUpdate { get; init; }
     public PromptVerbosityContract? ActivePrompt { get; init; }
     public ActivePromptChangeReasonContract? ActivePromptChangeReason { get; init; }
-    public string? ActivePromptRerouteReason { get; init; }
     public List<HudInsightContract> Insights { get; init; } = [];
     public SpeakerAttributionContract? SpeakerAttribution { get; init; }
     public DateTimeOffset Timestamp { get; init; }
