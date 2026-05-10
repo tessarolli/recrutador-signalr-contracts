@@ -6,10 +6,15 @@ namespace Recrutador.SignalR.Contracts;
 /// </summary>
 public sealed record BufferFillContract
 {
-    /// <summary>Words accumulated since the last prompt match.</summary>
+    /// <summary>Raw candidate word count in the current window.</summary>
     public int CurrentWords { get; init; }
 
-    /// <summary>Word count at which the FollowUpGenerator gate opens.</summary>
+    /// <summary>
+    ///     Absolute candidate-word count at which the FollowUpGenerator gate opens.
+    ///     The backend folds the prior-generation watermark into this value so the HUD
+    ///     can render the bar as a plain <c>CurrentWords / Threshold</c> ratio without
+    ///     knowing the gate's internal delta math: bar full == next chunk fires.
+    /// </summary>
     public int Threshold { get; init; }
 
     /// <summary>
