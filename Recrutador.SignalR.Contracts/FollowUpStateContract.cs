@@ -29,4 +29,23 @@ public sealed record FollowUpStateContract
     ///     verbatim in HUD chrome for operator confidence.
     /// </summary>
     public string? Reason { get; init; }
+
+    /// <summary>
+    ///     Uppercase depth label reflecting the new probe depth after an ADVANCE or
+    ///     ADVANCE_FAR verb (e.g. <c>"ELICIT"</c>, <c>"COMMIT"</c>). Null when no
+    ///     depth advance occurred this cycle. The HUD uses this to update the ladder
+    ///     eyebrow (e.g. "Sondagem -> Investigacao") without re-generating the prompt
+    ///     text, so the operator sees the new depth label in the same cycle the ADVANCE
+    ///     verb fires, not deferred to the next re-hydration.
+    /// </summary>
+    public string? ResolvedDepth { get; init; }
+
+    /// <summary>
+    ///     Uppercase navigation verb from the follow-up generator for this cycle
+    ///     (e.g. <c>"WAIT"</c>, <c>"STAY"</c>, <c>"ADVANCE"</c>, <c>"ADVANCE_FAR"</c>,
+    ///     <c>"ABANDON_CYCLE"</c>, <c>"ABANDON_CRITERION"</c>). Null when no verb was
+    ///     produced (stage was gated off). Allows the HUD to distinguish ADVANCE from
+    ///     STAY without parsing the <c>State</c> string.
+    /// </summary>
+    public string? NavigationVerb { get; init; }
 }

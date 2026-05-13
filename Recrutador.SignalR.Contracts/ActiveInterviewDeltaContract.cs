@@ -12,6 +12,18 @@ public sealed record ActiveInterviewDeltaContract
     public DateTimeOffset Timestamp { get; init; }
 
     /// <summary>
+    ///     Monotonically increasing sequence number for this session's push stream.
+    ///     The backend increments a per-session counter via <c>Interlocked.Increment</c>
+    ///     before every push (both from the main pipeline and from the async evaluator
+    ///     event handler), so the HUD client can detect and discard out-of-order deltas
+    ///     caused by concurrent pushes or SignalR delivery races.
+    ///     Default is 0 for deltas that pre-date sequencing (treated as earliest).
+    ///     HUD client implementation note: store the last accepted sequence; drop any
+    ///     delta whose Sequence is less than or equal to the stored value.
+    /// </summary>
+    public long Sequence { get; init; }
+
+    /// <summary>
     ///     Identifies which prompt the interviewer followed this cycle.
     ///     Null when no prompt was matched. The frontend should use this
     ///     to animate the correct prompt card to "used" state, rather than
