@@ -2,8 +2,8 @@ namespace Recrutador.SignalR.Contracts;
 
 /// <summary>
 ///     Wire representation of a single entry in the rolling history of prompts
-///     that have been asked during the session. Mirrors the domain
-///     <c>AskedPromptRecord</c> value object.
+///     that have been asked during the session. Retained for backward compatibility.
+///     New code should use <see cref="ProbeHistoryContract"/> instead.
 /// </summary>
 public sealed record AskedPromptContract
 {
