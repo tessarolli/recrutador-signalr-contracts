@@ -64,8 +64,9 @@ public sealed record ActiveInterviewDeltaContract
     public OffScriptCueContract? OffScriptCue { get; init; }
 
     /// <summary>
-    ///     Rolling history of recently-asked prompts for the HUD history lane.
-    ///     Null when the list has not changed this cycle.
+    ///     Rolling probe history for the HUD history lane.
+    ///     Contains all probes that departed the Staged position this cycle and earlier,
+    ///     capped server-side. Null when the list has not changed this cycle.
     /// </summary>
-    public IReadOnlyList<AskedPromptContract>? RecentlyAskedPrompts { get; init; }
+    public IReadOnlyList<ProbeHistoryContract>? ProbeHistory { get; init; }
 }

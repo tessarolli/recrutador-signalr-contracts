@@ -52,8 +52,9 @@ public sealed record ActiveInterviewStateContract
     public OffScriptCueContract? OffScriptCue { get; init; }
 
     /// <summary>
-    ///     Rolling history of recently asked prompts for the HUD history lane.
-    ///     Capped server-side. Empty list when nothing has been asked yet.
+    ///     Rolling probe history for the HUD history lane. Captures all probes that
+    ///     have departed the Staged position, including asked, skipped, completed, and
+    ///     abandoned probes. Capped server-side. Empty list when nothing has been recorded yet.
     /// </summary>
-    public IReadOnlyList<AskedPromptContract> RecentlyAskedPrompts { get; init; } = [];
+    public IReadOnlyList<ProbeHistoryContract> ProbeHistory { get; init; } = [];
 }
