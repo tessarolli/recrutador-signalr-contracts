@@ -69,4 +69,11 @@ public sealed record ActiveInterviewDeltaContract
     ///     capped server-side. Null when the list has not changed this cycle.
     /// </summary>
     public IReadOnlyList<ProbeHistoryContract>? ProbeHistory { get; init; }
+
+    /// <summary>
+    ///     Brief-level update produced by the async evaluator after a per-KP evidence
+    ///     upsert. Null when no brief was updated this cycle. The HUD uses this to
+    ///     show a conflict badge and to append a feed entry in the insights tab.
+    /// </summary>
+    public IReadOnlyList<KeyPointBriefDeltaContract>? BriefDeltas { get; init; }
 }
