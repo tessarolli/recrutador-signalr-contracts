@@ -2,10 +2,13 @@ namespace Recrutador.SignalR.Contracts;
 
 /// <summary>
 ///     Carries a brief-level update to the HUD insights feed after one evaluator
-///     cycle. Emitted by the async evaluator event handler when
-///     <c>LiveSessionState.UpsertKeyPointBrief</c> produced at least one new entry
-///     or conflict. The HUD uses this to update the coverage panel conflict badge
-///     and to append a feed entry in the insights tab.
+///     cycle or one ConflictArbiter run. Emitted whenever
+///     <c>LiveSessionState.UpsertKeyPointBrief</c> produced new entries or
+///     whenever <c>AppendArbitratedConflicts</c> appended one or more
+///     contradictions. The HUD uses this to update the coverage panel
+///     consistency badge and to append a feed entry in the insights tab. When
+///     the delta is from an arbiter run, <see cref="NewConflicts"/> carries the
+///     detailed contradiction list.
 /// </summary>
 public sealed record KeyPointBriefDeltaContract
 {
@@ -26,4 +29,13 @@ public sealed record KeyPointBriefDeltaContract
 
     /// <summary>UTC timestamp of the update.</summary>
     public required DateTimeOffset UpdatedAtUtc { get; init; }
+
+    /// <summary>
+    ///     Detailed contradictions appended to the brief during this evaluator
+    ///     cycle (or arbiter run). Populated by the backend ConflictArbiter; the
+    ///     HUD upgrades from the generic CONSISTENCY feed entry to a richer
+    ///     summary + quote rendering when present. Null on legacy or
+    ///     partial-data deltas where only <see cref="HasNewConflict"/> is set.
+    /// </summary>
+    public IReadOnlyList<ConflictDetail>? NewConflicts { get; init; }
 }
