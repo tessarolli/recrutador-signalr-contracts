@@ -13,4 +13,10 @@ public enum HeroState
 
     /// <summary>FollowUpGenerator LLM call in flight; spinner replaces buffer-fill.</summary>
     Generating = 2,
+
+    /// <summary>
+    ///     Staged prompt was asked by the interviewer. HUD holds the prompt visible in a consumed
+    ///     state until the next pipeline cycle advances the queue.
+    /// </summary>
+    Consumed = 3,
 }
