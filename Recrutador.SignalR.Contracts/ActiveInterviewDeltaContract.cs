@@ -46,6 +46,18 @@ public sealed record ActiveInterviewDeltaContract
     public HeroState? HeroState { get; init; }
 
     /// <summary>
+    ///     Remaining time, in milliseconds, on the consumed-hold silence timer at
+    ///     the moment this delta was sent. Present ONLY on a run that (re)schedules
+    ///     the timer -- i.e. the match that opens the hold and every interviewer
+    ///     chunk that pushes the deadline forward while the hold is held. Null on
+    ///     every other delta (including Consumed deltas that do not touch the timer).
+    ///     The HUD restarts its visible countdown each time this field is present,
+    ///     so the bar can never drain ahead of the real deadline. Server-computed,
+    ///     so it is immune to client clock skew.
+    /// </summary>
+    public int? ConsumedHoldRemainingMs { get; init; }
+
+    /// <summary>
     ///     Current position within the strategy ladder for the active criterion.
     ///     Null when not in Core phase or when the ladder has not advanced this cycle.
     /// </summary>
